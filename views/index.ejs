@@ -1,0 +1,27 @@
+<%- include ('partials/header.ejs') %>
+<%- include ('partials/homeNavbar.ejs') %>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome!</h1>
+            <p class="lead">This is a blog to share insights and discussions on useful articles.</p>
+            <hr class="my-4">
+            <p>Feel free to share any thoughts from current researches and technology advances. We also are here to raise healthy discussions about these matters. Please, even though its ok to share personal thoughts about a subject, remember to be scientific accurate and base your opinions on valid researches.</p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        </div>
+        <% articles.forEach(article => { %>
+        <br>
+        <div class="card">
+            <div class="card-header">
+                <h2><%= article.title%></h2>
+            </div>
+            <div class="card-body">
+                <a href="/<%= article.slug %>" class="btn btn-success">Read full article</a>
+            </div>
+        </div>
+        <% }) %>
+
+    </div>
+</body>
+
+<%- include ('partials/footer.ejs') %>
