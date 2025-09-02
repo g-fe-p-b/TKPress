@@ -1,4 +1,3 @@
-TKpress
 Descrição:
 Este projeto foi desenvolvido como parte do curso do GuiaDoProgramador. Ele é um sistema de blog e gerenciamento de conteúdo feito com Node.js e Express, utilizando a arquitetura MVC (Model-View-Controller). O objetivo é aplicar e aprofundar os conhecimentos técnicos, focando na integração de tecnologias back-end, como a conexão com o banco de dados e a manipulação de dados.
 
