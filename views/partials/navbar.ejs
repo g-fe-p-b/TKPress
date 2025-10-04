@@ -1,20 +1,17 @@
- <nav class="navbar navbar-expand-sm navbar-light bg-primary">
-        
-        <a class="navbar-brand" href="/">
-            <h5><img src="\img\TKE3.png">
-            TKPress</h5>
-        </a>
+<nav class="navbar card fade-down" role="navigation" aria-label="Navegação principal">
+  <div class="container flex justify-between items-center">
+    <!-- Marca -->
+    <a class="brand flex items-center gap-2" href="/" aria-label="Página inicial">
+       <img src="/img/TKE3.png" alt="Logo TKPress" class="logo-img" >
+      <span class="title">TKPress</span>
+    </a>
 
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <div style="border-left:thin solid #000000">
-                    <a class="nav-link" href="../../admin/categories/index"><h6>Categories</h6></a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <div style="border-left:thin solid #000000">
-                    <a class="nav-link" href="../../articles"><h6>Articles</h6></a>
-                </div>
-            </li>
-        </ul>
-    </nav>
+    <!-- Links -->
+    <ul class="nav-links flex gap-4">
+      <a href="/articles" class="btn ghost">Artigos</a>
+      <a href="/admin/categories/index" class="btn ghost">Categorias</a>
+      <a href="/about" class="btn ghost">Sobre</a>
+    </ul>
+
+  </div>
+</nav>

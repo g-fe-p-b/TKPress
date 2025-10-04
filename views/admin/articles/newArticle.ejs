@@ -1,53 +1,41 @@
 <%- include ('../../partials/header.ejs') %>
-<body>
-     <%- include ('../../partials/navbar.ejs') %>
+<%- include ('../../partials/navbar.ejs') %>
 
-    <div class="container">
-        <hr>
-        <div class="card">
-            <div class="card-header">
-                <h2>New Article </h2>
-            </div>
-            <div class="card-body">
-                <form method="POST" action="/articles/save">
-                    <input class="form-control" type="text" name="title" placeholder="Title"><br>
-                    <textarea class="form-control" placeholder="Write your article here." name="body" id="article"></textarea><br>
-                    <label>Category</label>
-                    <select name="category" class="form-control">
-                        <% categories.forEach((category) => { %>
-                            <option value="<%= category.id %>"> <%= category.title %> </option>
-                        <% }) %>
-                    </select><br>
-                    <button class="btn btn-success">Register</button>
-                </form>
-            </div>
-        </div>
+<main class="container">
+  <section class="card fade-up">
+    <header class="card-header">
+      <h2>Novo artigo</h2>
+    </header>
+    <div class="card-body">
+      <form method="POST" action="/articles/save">
+        <label for="title">Título</label>
+        <input class="form-control" type="text" id="title" name="title" placeholder="Título do artigo">
+
+        <label for="article">Conteúdo</label>
+        <textarea class="form-control" name="body" id="article" placeholder="Escreva seu artigo aqui."></textarea>
+
+        <label for="category">Categoria</label>
+        <select name="category" id="category" class="form-control">
+          <% categories.forEach((category) => { %>
+            <option value="<%= category.id %>"><%= category.title %></option>
+          <% }) %>
+        </select>
+
+        <button class="btn">Salvar</button>
+      </form>
     </div>
+  </section>
+</main>
 
-
+<%- include ('../../partials/footer.ejs') %>
 
 <script>
-    tinymce.init({
-        selector: "#article",
-        plugins: [
-                    'advlist',
-                    'autolink',
-                    'link',
-                    'image',
-                    'lists',
-                    'preview',
-                    'searchreplace',
-                    'wordcount',
-                    'fullscreen',
-                    'insertdatetime',
-                    'media',
-                    'save',
-                    'table',
-                    'emoticons',
-                ]
-    })
+tinymce.init({
+  selector: "#article",
+  plugins: [
+    'advlist autolink link image lists preview searchreplace wordcount fullscreen insertdatetime media save table emoticons'
+  ]
+})
 </script>
 
-</body>
-<%- include ('../../partials/footer.ejs') %>
 
