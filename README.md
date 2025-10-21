@@ -22,7 +22,7 @@ Interface e Experiência
 
 Navbar redesenhada com logo e consistência de estilo em todas as páginas.
 
-Layout baseado em grid responsivo e moderno.
+Layout baseado em grid responsivo.
 
 Cards, botões e formulários padronizados para melhor clareza visual.
 
@@ -70,7 +70,8 @@ cd tkpress
 
 Instale as dependências:
 
-npm install
+npm init
+npm install express jsonwebtoken sequelize mysql2 slugfy ejs
 
 
 Configure o banco de dados no arquivo .env. Exemplo:
@@ -104,3 +105,7 @@ Upload de imagens nos artigos.
 Temas customizáveis para UI.
 
 API REST para integração externa.
+
+Ajuste de rotas.
+
+Resolver bug de autenticação.
