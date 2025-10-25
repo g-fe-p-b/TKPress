@@ -5,7 +5,7 @@
   <section class="card fade-up">
     <header class="card-header flex justify-between items-center">
       <h2>Artigos</h2>
-      <a class="btn ghost" href="/admin/articles/new">Criar novo artigo</a>
+      <a class="btn ghost" href="/articles/new">Criar novo artigo</a>
     </header>
 
     <div class="card-body">
@@ -25,11 +25,12 @@
             <td><%= article.id %></td>
             <td><%= article.title %></td>
             <td><%= article.slug %></td>
-            <td><%= article.category.title %></td>
+            <td><%= article.category ? article.category.title : '—' %></td>
             <td class="flex gap-2">
+              <a class="btn" href="/articles/<%= article.slug %>" target="_blank" rel="noopener">Ver</a>
               <form method="POST" action="/articles/delete" onsubmit="confirmDelete(event,this)">
                 <input type="hidden" name="id" value="<%= article.id %>">
-                <button class="btn danger">Deletar</button>
+                <button class="btn ghost">Deletar</button>
               </form>
             </td>
           </tr>
@@ -38,6 +39,7 @@
       </table>
     </div>
   </section>
+  <div id="toast" class="toast" hidden></div>
 </main>
 
 <%- include ('../../partials/footer.ejs') %>
