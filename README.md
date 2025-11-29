@@ -64,7 +64,7 @@ Autenticação: Sessions / JWT (dependendo da configuração)
 
 Clone este repositório:
 
-git clone https://github.com/seuuser/tkpress.git
+git clone https://github.com/g-fe-p-b/TKPress
 cd tkpress
 
 

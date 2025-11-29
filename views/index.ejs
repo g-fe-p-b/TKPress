@@ -3,7 +3,7 @@
 
 <body>
   <main class="container" id="main">
-    
+
     <!-- Cabeçalho -->
     <header class="header" role="banner">
       <a class="brand" href="/" aria-label="Ir para a página inicial">
@@ -17,15 +17,15 @@
 
     <!-- Grid com hero e painel lateral -->
     <section class="grid">
-      
+
       <!-- Hero principal -->
       <section class="hero card fade-up" aria-labelledby="headline">
         <h1 id="headline" class="headline">Leitura rápida. Conteúdo com alma.</h1>
         <p class="lead">Descubra artigos, organize por categorias e tenha uma experiência incrível.</p>
 
         <div class="controls" role="region" aria-label="Ações principais">
-          <button class="btn" id="cta-read">Explorar artigos</button>
-          <button class="btn ghost" id="cta-new">Criar novo artigo</button>
+          <a href="/articles" class="btn" id="cta-read">Explorar artigos</a>
+          <a href="/articles/new" class="btn ghost" id="cta-new">Criar novo artigo</a>
         </div>
 
         <hr style="margin:18px 0; border:0; height:1px; background:rgba(255,255,255,0.1)">
@@ -38,55 +38,71 @@
       <!-- Painel direito -->
       <aside class="right-col" aria-labelledby="auth-title">
 
-        <!-- Card de Login / Registro -->
-        <div id="auth-panel" class="card" role="region" aria-label="painel de autenticação">
-          <h2 id="auth-title" style="margin:0 0 8px 0">Entrar / Criar conta</h2>
+        <% if (!user) { %>
 
-          <div style="display:flex; gap:8px; margin-bottom:12px">
-            <button class="btn ghost" id="tab-login" aria-pressed="true">Entrar</button>
-            <button class="btn ghost" id="tab-register" aria-pressed="false">Criar conta</button>
+          <!-- Card de Login / Registro -->
+          <div id="auth-panel" class="card" role="region" aria-label="painel de autenticação">
+            <h2 id="auth-title" class="auth-title" style="margin:0 0 8px 0">Entrar / Criar conta</h2>
+
+            <div style="display:flex; gap:8px; margin-bottom:12px">
+              <button class="btn ghost" id="tab-login" aria-pressed="true">Entrar</button>
+              <button class="btn ghost" id="tab-register" aria-pressed="true">Criar conta</button>
+            </div>
+
+            <!-- Login -->
+            <form id="login-form" class="form" autocomplete="on" novalidate method="POST" action="/auth/login">
+              <div class="form-row">
+                <label for="login-email">Email</label>
+                <input id="login-email" name="email" type="email" inputmode="email" placeholder="seu@exemplo.com" required autocomplete="teste@teste"/>
+              </div>
+              <div class="form-row">
+                <label for="login-pass">Senha</label>
+                <input id="login-pass" name="password" type="password" minlength="5" placeholder="•••••" required autocomplete="teste" />
+              </div>
+              <div style="display:flex; gap:8px; align-items:center">
+                <button class="btn" type="submit">Entrar</button>
+                <button class="btn ghost" type="button" id="forgot">Esqueci a senha</button>
+              </div>
+            </form>
+
+            <!-- Registro -->
+            <form id="register-form" class="form" style="display:none" autocomplete="on" novalidate action="/auth/register" >
+              <div class="form-row">
+                <label for="reg-name">Nome</label>
+                <input id="reg-name" name="name" type="text" placeholder="Seu nome" required autocomplete="Teste" />
+              </div>
+              <div class="form-row">
+                <label for="reg-email">Email</label>
+                <input id="reg-email" name="email" type="email" placeholder="seu@exemplo.com" required autocomplete="teste@teste"/>
+              </div>
+              <div class="form-row">
+                <label for="reg-cpf">CPF</label>
+                <input id="reg-cpf" name="cpf" type="text" placeholder="000.000.000-00" required autocomplete="off" /> </div>
+              <div class="form-row">
+                <label for="reg-pass">Senha</label>
+                <input id="reg-pass" name="password" type="password" minlength="5" maxlength="20" placeholder="•••••" required autocomplete="teste" />
+              </div>
+              <div style="display:flex; gap:8px; align-items:center">
+                <button class="btn" type="submit">Criar conta</button>
+                <button class="btn ghost" type="button" id="cancel-reg">Cancelar</button>
+              </div>
+            </form>
+
+            <div class="small" style="margin-top:12px; color:var(--muted)">
+              Senha mínima: 5 caracteres.
+            </div>
           </div>
-
-          <!-- Login -->
-          <form id="login-form" class="form" autocomplete="on" novalidate>
-            <div class="form-row">
-              <label for="login-email">Email</label>
-              <input id="login-email" name="email" type="email" inputmode="email" placeholder="seu@exemplo.com" required />
-            </div>
-            <div class="form-row">
-              <label for="login-pass">Senha</label>
-              <input id="login-pass" name="password" type="password" minlength="6" placeholder="••••••" required />
-            </div>
-            <div style="display:flex; gap:8px; align-items:center">
-              <button class="btn" type="submit">Entrar</button>
-              <button class="btn ghost" type="button" id="forgot">Esqueci a senha</button>
-            </div>
-          </form>
-
-          <!-- Registro -->
-          <form id="register-form" class="form" style="display:none" autocomplete="on" novalidate>
-            <div class="form-row">
-              <label for="reg-name">Nome</label>
-              <input id="reg-name" name="name" type="text" placeholder="Seu nome" required />
-            </div>
-            <div class="form-row">
-              <label for="reg-email">Email</label>
-              <input id="reg-email" name="email" type="email" placeholder="seu@exemplo.com" required />
-            </div>
-            <div class="form-row">
-              <label for="reg-pass">Senha</label>
-              <input id="reg-pass" name="password" type="password" minlength="6" placeholder="••••••" required />
-            </div>
-            <div style="display:flex; gap:8px; align-items:center">
-              <button class="btn" type="submit">Criar conta</button>
-              <button class="btn ghost" type="button" id="cancel-reg">Cancelar</button>
-            </div>
-          </form>
-
-          <div class="small" style="margin-top:12px; color:var(--muted)">
-            Senha mínima: 6 caracteres. Em produção, utilize hashing e backend seguro.
+        <% } else { %>
+          <div id="user-panel" class="card" role="region" aria-label="Painel do usuário">
+            <h2 class="auth-title" style="margin:0 0 8px 0">
+              Bem-vindo, <%= user.name %>!
+            </h2>
+            <p style="margin-bottom: 12px; color: var(--muted); font-size: 0.9em;">
+              Logado como: <%= user.email %>
+            </p>
+            <a href="/auth/logout" class="btn">Sair (Logout)</a>
           </div>
-        </div>
+        <% } %>
       </aside>
     </section>
 
@@ -98,13 +114,13 @@
           <article class="article fade-up">
             <div class="content">
               <h4 class="title"><%= article.title %></h4>
-              <a href="/<%= article.slug %>" class="btn ghost">Ler artigo</a>
+              <a href="/articles/<%= article.slug %>" class="btn ghost">Ler artigo</a>
             </div>
           </article>
         <% }) %>
       </div>
     </section>
-
-    <%- include('partials/footer.ejs') %>
+    <div id="toast" class="toast" hidden></div>
   </main>
 </body>
+<%- include('partials/footer.ejs') %>

@@ -1,5 +1,5 @@
-const {DataTypes} = require("sequelize");
-const connection = require ("../database/database");
+import { DataTypes } from "sequelize";
+import connection from "../config/database.js";
 
 const Category = connection.define('categories', {
     title:{
@@ -10,7 +10,7 @@ const Category = connection.define('categories', {
         type: DataTypes.STRING,
         allowNull: false
     }
-})
+});
 
 
-module.exports = Category;
+export default Category;
