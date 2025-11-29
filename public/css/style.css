@@ -1,8 +1,8 @@
 
 /* Tema Claro (padrão) */
 :root {
-  --bg: #f9fafb;
-  --card: #ffffff;
+  --bg: #fafbf9;
+  --card: #eae0f8;
   --muted: #6b7280;
   --accent: #7c5cff;
   --glass: rgba(0, 0, 0, 0.03);
@@ -21,9 +21,6 @@
 }
 
 /* Tema Escuro */
-/* =========================================================
-   TEMA ESCURO REFINADO
-   ========================================================== */
 [data-theme="dark"] {
   --bg: #0b1120;               /* Fundo mais profundo e suave */
   --card: #131c2e;             /* Cards levemente destacados do fundo */
@@ -218,6 +215,7 @@ body {
 .nav-links {
   list-style: none;
   padding: 0;
+  text-align-last:right;
   margin: 0;
 }
 
@@ -499,19 +497,19 @@ button:focus {
 /* Toast (notificação) */
 .toast {
   position: fixed;
-  right: 18px;
-  bottom: 18px;
-  max-width: 320px;
+  right: 50%;
+  bottom: 50%;
+  max-width: 100%;
   z-index: 1200;
 }
 
 .toast .msg {
   background: #071430;
-  padding: 12px 14px;
+  padding: 18% 8%;
   border-radius: 10px;
   border-left: 4px solid var(--accent);
   color: #dff1ff;
-  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+  box-shadow: 0 10% 30% rgba(2, 6, 23, 0.6);
 }
 
 /* Elementos ocultos para leitores de tela */

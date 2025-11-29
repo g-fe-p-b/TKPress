@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import { define } from "../config/database";
+import connection from "../config/database.js";
 
-const User = define('users', {
+const User = connection.define('users', {
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -12,10 +12,15 @@ const User = define('users', {
     unique: true,
     validate: { isEmail: true }
   },
-  passwordHash: {
+  password: {
     type: DataTypes.STRING,
     allowNull: false
-  }
+  },
+  cpf: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    unique: true 
+  },
 });
 
 export default User;

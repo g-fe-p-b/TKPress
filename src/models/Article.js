@@ -1,9 +1,9 @@
 import { DataTypes } from "sequelize";
-import { define } from "../config/database";
-import Category, { hasMany } from "./Category";
+import connection from "../config/database.js";
+import Category from "./Category.js";
 
 
-const Article = define('articles', {
+const Article = connection.define('articles', {
     title:{
         type: DataTypes.STRING,
         allowNull:false
@@ -18,7 +18,7 @@ const Article = define('articles', {
     }
 })
 
-hasMany(Article, { foreignKey: 'categoryId', onDelete: 'SET NULL' });
+Category.hasMany(Article, { foreignKey: 'categoryId', onDelete: 'SET NULL' });
 Article.belongsTo(Category, { foreignKey: 'categoryId' });
 
 export default Article;

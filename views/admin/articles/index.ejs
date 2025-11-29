@@ -28,7 +28,7 @@
             <td><%= article.category ? article.category.title : '—' %></td>
             <td class="flex gap-2">
               <a class="btn" href="/articles/<%= article.slug %>" target="_blank" rel="noopener">Ver</a>
-              <form method="POST" action="/articles/delete" onsubmit="confirmDelete(event,this)">
+              <form method="POST" action="/articles/delete" class='form-delete' data-confirm-message="Deseja realmente deletar este artigo?">
                 <input type="hidden" name="id" value="<%= article.id %>">
                 <button class="btn ghost">Deletar</button>
               </form>
@@ -44,11 +44,3 @@
 
 <%- include ('../../partials/footer.ejs') %>
 
-<script>
-function confirmDelete(event, form){
-  event.preventDefault();
-  if(confirm("Deseja realmente deletar este artigo?")){
-    form.submit()
-  }
-}
-</script>

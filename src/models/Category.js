@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import { define } from "../config/database";
+import connection from "../config/database.js";
 
-const Category = define('categories', {
+const Category = connection.define('categories', {
     title:{
         type: DataTypes.STRING,
         allowNull:false

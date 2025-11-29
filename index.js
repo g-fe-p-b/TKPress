@@ -1,29 +1,29 @@
-import express, { static } from 'express';
-import { urlencoded, json } from "body-parser";
-import connection, { authenticate } from "./src/config/database";
-import session, { Store } from "express-session";
-const SequelizeStore = require("connect-session-sequelize")(Store);
+import express from 'express';
+import bodyParser from "body-parser";
+import connection from "./src/config/database.js";
+import session from "express-session";
 import compression from 'compression';
 import { contentSecurityPolicy } from 'helmet';
 import { join } from 'path';
+import sequelize from "./src/config/database.js";
 const app = express();
 
 // controllers
-import categoriesController from "./src/controllers/categoriesController";
-import articlesController from "./src/controllers/articlesController";
-import authController from "./src/controllers/authController";
+import categoriesRoutes from "./src/routes/categoriesRoutes.js";
+import articlesRoutes from "./src/routes/articlesRoutes.js";
+import authRoutes from "./src/routes/authRoutes.js";
 
 // models
-import { findAll, findOne } from "./src/models/Article";
-import Category from "./src/models/Category";
-import User from "./src/models/User";
+import Article from "./src/models/Article.js";
+import Category from "./src/models/Category.js";
+import User from "./src/models/User.js";
 
 // middlewares
 app.set('view engine', 'ejs');
-app.set('views', join(__dirname, 'views'));
-app.use(static('public'));
-app.use(urlencoded({ extended: false }));
-app.use(json());
+app.set('views', join('views'));
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(compression());
 
 const scriptSrcUrls = [
@@ -60,42 +60,34 @@ app.use(
   })
 );
 
-// session store (usando Sequelize)
-const sessionStore = new SequelizeStore({ db: connection });
 app.use(session({
-  secret: process.env.SESSION_SECRET || "trocar-esta-chave-em-producao",
-  store: sessionStore,
+  secret: "senha-secreta",
   resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 dia
+  saveUninitialized: true,
+  cookie: {
+    secure: false,
+    maxAge: 3600000
+  }
 }));
-sessionStore.sync();
 
-// expose flash and current user to views
-app.use((req, res, next) => {
-  res.locals.flash = req.session.flash || null;
-  delete req.session.flash;
-  res.locals.currentUser = req.session.userId ? {
-    id: req.session.userId,
-    name: req.session.userName,
-    email: req.session.userEmail
-  } : null;
+app.use((req,res,next) => {
+  res.locals.user = req.session.user || null;
   next();
 });
 
 // Database
-authenticate()
+connection.authenticate()
   .then(() => console.log("Successfully connected to the database."))
   .catch(err => console.error(err));
 
 // mount controllers
-app.use("/", categoriesController);
-app.use("/", articlesController);
-app.use("/", authController);
+app.use("/categories", categoriesRoutes);
+app.use("/articles", articlesRoutes);
+app.use("/auth", authRoutes);
 
 // rota home
 app.get("/", (req, res) => {
-  findAll({
+  Article.findAll({
     order: [['id', 'DESC']],
     include: [{ model: Category }],
     limit: 10
@@ -110,7 +102,7 @@ app.get("/", (req, res) => {
 // rota para exibir artigo
 app.get("/articles/:slug", (req, res) => {
   let slug = req.params.slug;
-  findOne({ where: { slug: slug }})
+  Article.findOne({ where: { slug: slug }})
     .then(article => {
       if (article != undefined) {
         res.render("articles", { article: article });
@@ -123,11 +115,45 @@ app.get("/articles/:slug", (req, res) => {
     });
 });
 
+app.post("/auth/login", (req, res) => {
+  const {email, password} = req.body;
+  
+  if (email === "teste@teste" && password === "teste") {
+    req.session.user = {
+      id: 1,
+      email: "teste@teste",
+      name: "Usuário Teste"
+    };
+    console.log("Login efetuado com sucesso!", req.session.user);
+  }
+  res.redirect("/");
+})
+app.post("/auth/regsiter", (req, res) => {
+  const {name, email, cpf, password} = req.body;
+  //validação de cpf
+  req.session.user = {
+    cpf: cpf,
+    email: email,
+    name: name,
+    password: password
+  };
+  console.log("Registro efetuado com sucesso!", req.session.user);
+  res.redirect("/");
+});
+app.get("/auth/logout", (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      console.log(err);
+    }
+    res.redirect("/");
+  });
+});
+
 app.get("/about", (req, res) => {
   res.render("about");
 });
 
-// API para checar usuário autenticado
+
 app.get("/api/me", (req, res) => {
   if (req.session && req.session.userId) {
     res.json({
@@ -140,5 +166,20 @@ app.get("/api/me", (req, res) => {
   }
 });
 
+const PORT = process.env.PORT || 3000;
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Conexão com o banco de dados foi estabelecida com sucesso.");
+    await sequelize.sync(); 
+    console.log("Tabelas sincronizadas com o banco de dados.");
+    app.listen(PORT, () => {
+      console.log(`Servidor rodando na porta ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Não foi possível conectar ao banco de dados:", err);
+  }
+};
+startServer();
 
-app.listen(8080, () => console.log("Server online on port 8080"));
+// app.listen(8080, () => console.log("Server online on port 8080"));

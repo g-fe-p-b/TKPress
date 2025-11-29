@@ -1,106 +1,104 @@
 TKPress
 
-Um CMS simples e escalável desenvolvido em Node.js + Express + EJS, com foco em boa experiência do usuário, UI consistente e estrutura otimizada para SEO.
+Um CMS simples em Node.js usando Express e EJS, com gestão de artigos e categorias,
+autenticação por sessão e integração com TinyMCE para edição de conteúdo.
 
-🚀 Funcionalidades
+**Recursos principais:**
+- **Autenticação:** criação/login de usuários e sessões.
+- **CRUD de Artigos:** criar, editar, listar e excluir artigos.
+- **Categorias:** criação e associação de categorias aos artigos.
+- **Editor WYSIWYG:** TinyMCE integrado no frontend para edição rica.
+- **Interface:** views em EJS e estilos com Bootstrap em `public/css`.
 
-Autenticação
+**Estrutura relevante do projeto:**
+- **`index.js`**: ponto de entrada principal.
+- **`src/`**: lógica do servidor e controllers.
+- **`views/`**: templates EJS (`partials`, `admin`, páginas públicas).
+- **`public/`**: assets estáticos (CSS, JS, imagens, TinyMCE).
+- **`models/` & `config/`**: configuração e modelos Sequelize.
+- **`src/__tests__/`**: testes jest/supertest existentes.
+- **`coverage/`**: relatórios de coverage gerados pelo jest.
 
-Tela de login e criação de conta integradas.
+**Tecnologias:**
+- Node.js (ES modules)
+- Express
+- EJS
+- Sequelize (MySQL, PostgreSQL ou SQLite conforme `config`)
+- TinyMCE
+- Bootstrap
 
-Alternância entre login e registro em um único painel.
+**Instalação e uso rápido**
 
-Gestão de Conteúdo
+1. Clone o repositório:
 
-Criação, edição e exclusão de artigos.
-
-Gestão de categorias com edição rápida e validação.
-
-Editor de texto com suporte a formatação (TinyMCE integrado).
-
-Interface e Experiência
-
-Navbar redesenhada com logo e consistência de estilo em todas as páginas.
-
-Layout baseado em grid responsivo e moderno.
-
-Cards, botões e formulários padronizados para melhor clareza visual.
-
-Notificações e feedbacks acessíveis (ex: confirmações ao deletar).
-
-SEO e Acessibilidade
-
-Estrutura semântica e otimizada para buscadores.
-
-Uso de atributos ARIA para leitores de tela.
-
-Hierarquia clara de conteúdo (hero section, CTAs, listagem de artigos).
-
-🛠️ Tecnologias
-
-Backend: Node.js, Express
-
-Frontend: EJS, Bootstrap (customizado)
-
-Banco de Dados: MySQL ou PostgreSQL (via Sequelize)
-
-Editor de Texto: TinyMCE
-
-Autenticação: Sessions / JWT (dependendo da configuração)
-
-/views
-  /partials        -> Header, Footer, Navbar, etc.
-  /home            -> Página inicial
-  /admin
-    /articles      -> CRUD de artigos
-    /categories    -> CRUD de categorias
-    /auth          -> Login e Registro
-/public
-  /images          -> Logo e assets estáticos
-  /css             -> Estilos customizados
-
-  
-📖 Como rodar o projeto
-
-Clone este repositório:
-
+```
 git clone https://github.com/g-fe-p-b/TKPress
-cd tkpress
+cd TKPress
+```
 
+2. Instale dependências:
 
-Instale as dependências:
-
+```
 npm install
+```
 
+3. Configure variáveis de ambiente (crie um arquivo `.env` na raiz).
+Exemplo mínimo:
 
-Configure o banco de dados no arquivo .env. Exemplo:
-
+```
 DB_HOST=localhost
 DB_USER=root
-DB_PASS=senha
+DB_PASS=sua_senha
 DB_NAME=tkpress
+```
 
+4. (Opcional) Rode migrations se estiver usando Sequelize e tiver migrations:
 
-Rode as migrations (se estiver usando Sequelize):
-
+```
 npx sequelize db:migrate
+```
+
+5. Inicie a aplicação localmente (usando Node):
+
+```
+start
+```
 
 
-Inicie o servidor:
+Abra `http://localhost:3000` no navegador (porta padrão pode variar conforme `index.js`).
 
-npm start
+**Testes e Coverage**
+
+- Rodar testes:
+
+```
+npm test
+```
+
+- Rodar testes em watch:
+
+```
+npm run test:watch
+```
+
+- Gerar coverage (Jest):
+
+```
+npm run test:coverage
+```
+
+Os relatórios de coverage ficam em `coverage/` e o lcov em `lcov.info`.
+
+**Observações sobre configuração**
+- O projeto usa Sequelize; ajuste `config/config.json` (ou `config/config.js`) e o arquivo `.env` conforme o banco desejado (MySQL, PostgreSQL ou SQLite).
+- Sessões estão configuradas com `express-session` e `connect-session-sequelize`.
+
+**Contribuição e melhorias futuras**
+- Upload de imagens para artigos.
+- Painel administrativo mais completo com estatísticas.
 
 
-Acesse no navegador:
-
-http://localhost:3000
-
-🌟 Futuras melhorias
-
-Painel administrativo com dashboard e estatísticas.
-
-Upload de imagens nos artigos.
-
-Temas customizáveis para UI.
+--
+Arquivo atualizado automaticamente para refletir a estrutura atual do repositório.
 
 API REST para integração externa.

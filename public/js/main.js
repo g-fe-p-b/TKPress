@@ -9,7 +9,7 @@
       toast.hidden = true;
       toast.innerHTML = '';
     }, 3500);
-  }
+  };
 
   // CTA buttons
   const ctaRead = document.getElementById('cta-read');
@@ -19,13 +19,13 @@
     ctaRead.addEventListener('click', () => {
       window.location.href = '/articles';
     });
-  }
+  };
 
   if (ctaNew) {
     ctaNew.addEventListener('click', async () => {
       window.location.href = '/articles/new';
     });
-  }
+  };
 
   // Tabs no painel de autenticação
   const tabLogin = document.getElementById('tab-login');
@@ -69,30 +69,43 @@ function validarCPF(cpf) {
   if (b2 === 10) b2 = 0;
 
   return numeros[9] === b1 && numeros[10] === b2;
-}
+};
 
-const signupForm = document.getElementById('signup-form');
-if (signupForm) {
-  signupForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const nome = e.target.nome.value.trim();
-    const email = e.target.email.value.trim();
-    const cpf = e.target.cpf.value.trim();
-    const senha = e.target.senha.value.trim();
+if (registerForm) {
+  registerForm.addEventListener('submit', () => {
+    const nome = registerForm.name.value.trim();
+    const email = registerForm.email.value.trim();
+    const cpf = registerForm.cpf.value.trim();
+    const senha = registerForm.password.value.trim();
 
     if (!nome || !email || !cpf || !senha) {
+      e.preventDefault();
       showToast('Todos os campos são obrigatórios');
       return;
-    }
+    };
 
     if (!validarCPF(cpf)) {
+      e.preventDefault();
       showToast('CPF inválido');
       return;
-    }
-
-    showToast('Cadastro validado com sucesso!');
+    };
   });
-}
+};
+
+
+document.addEventListener('DOMContentLoaded', () =>{
+  const deleteForms = document.querySelectorAll('.form-delete');
+  deleteForms.forEach(form => {
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const message = event.target.dataset.confirmMessage;
+      if (confirm(message)){
+        event.target.submit();
+      };
+    });
+  });
+});
+
 
   // Toggle dark theme
   const themeToggleId = 'theme-toggle';
@@ -100,7 +113,7 @@ if (signupForm) {
     if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
     else document.documentElement.removeAttribute('data-theme');
     localStorage.setItem('tk_theme', theme);
-  }
+  };
   // criar botão se não existir
   const existingToggle = document.getElementById(themeToggleId);
   if (!existingToggle) {
@@ -117,7 +130,7 @@ if (signupForm) {
     // anexar ao header se possível
     const header = document.querySelector('.header');
     if (header) header.appendChild(btn);
-  }
+  };
   // inicializa tema salvo
   const saved = localStorage.getItem('tk_theme') || 'light';
   applyTheme(saved);

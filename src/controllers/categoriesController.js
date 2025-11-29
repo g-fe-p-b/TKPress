@@ -1,19 +1,24 @@
 // categories/categoriesController.js
 import { Router } from "express";
 const router = Router();
-import { create, findAll, destroy, findByPk, update } from "../models/Category";
+import Category from "../models/Category.js";
 import slugify from "slugify";
 
-// Form para nova categoria (protegido)
-router.get("/categories/new", (req, res) => {
-  res.render("admin/categories/new");
-});
+// Form para nova categoria
+export async function newCategory(req, res){
+  try{
+    res.render("admin/categories/new");
+  } catch (error){
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
 
-// Salvar nova categoria (protegido)
-router.post("/categories/save", (req, res) => {
+// Salvar nova categoria
+export async function saveCategory(req, res) {
   const title = req.body.title;
   if (title && title.trim() !== "") {
-    create({
+    Category.create({
       title: title.trim(),
       slug: slugify(title, { lower: true, strict: true })
     }).then(() => {
@@ -25,61 +30,63 @@ router.post("/categories/save", (req, res) => {
   } else {
     res.redirect("admin/categories/new");
   }
-});
+};
 
-// Index de categorias (protegido)
-router.get("/categories", (req, res) => {
-  findAll().then(categories => {
-    res.render("admin/categories/index", { categories });
-  }).catch(err => {
-    console.error(err);
-    res.redirect("/");
-  });
-});
+// Index de categorias
+export async function allCategories(req, res) {
+    Category.findAll().then(categories => {
+      res.render("admin/categories/index", { categories });
+    }).catch(err => {
+      console.error(err);
+      res.redirect("/");
+    });
+};
 
-// Deletar (protegido)
-router.post("/categories/delete", (req, res) => {
-  const id = req.body.id;
-  if (id) {
-    destroy({ where: { id } })
-      .then(() => res.redirect("/categories"))
-      .catch(err => {
-        console.error(err);
-        res.redirect("/categories");
-      });
-  } else {
-    res.redirect("/categories");
-  }
-});
+// Deletar
+export async function deleteCategory(req, res) {
+    const id = req.body.id;
+    if (id) {
+      Category.destroy({ where: { id } })
+        .then(() => res.redirect("/categories"))
+        .catch(err => {
+          console.error(err);
+          res.redirect("/categories");
+        });
+    } else {
+      res.redirect("/categories");
+    }
+};
 
-// Editar (GET) — protegido
-router.get("/categories/edit/:id", (req, res) => {
-  const id = req.params.id;
-  if (isNaN(id)) {
-    return res.redirect("admin/categories/index");
-  }
-  findByPk(id).then(category => {
-    if (category) res.render("admin/categories/edit", { category });
-    else res.redirect("admin/categories/index");
-  }).catch(err => {
-    console.error(err);
-    res.redirect("admin/categories/index");
-  });
-});
 
-// Atualizar (POST) — protegido
-router.post("/categories/update", (req, res) => {
-  const { id, title } = req.body;
-  if (!id || !title) return res.redirect("/categories/update");
+// Editar (GET)
+export async function editCategory(req, res) {
+    const id = req.params.id;
+    if (isNaN(id)) {
+      return res.redirect("admin/categories/index");
+    }
+    Category.findByPk(id).then(category => {
+      if (category) res.render("admin/categories/edit", { category });
+      else res.redirect("admin/categories/index");
+    }).catch(err => {
+      console.error(err);
+      res.redirect("admin/categories/index");
+    });    
+}
 
-  update({ title, slug: slugify(title, { lower: true, strict: true }) }, {
-    where: { id }
-  }).then(() => {
-    res.redirect("/categories");
-  }).catch(err => {
-    console.error(err);
-    res.redirect("/categories");
-  });
-});
 
-export default router;
+// Atualizar (POST)
+export async function updateCategory(req, res) {
+    const { id, title } = req.body;
+    if (!id || !title) return res.redirect("/categories/update");
+
+    Category.update({ title, slug: slugify(title, { lower: true, strict: true }) }, {
+      where: { id }
+    }).then(() => {
+      res.redirect("/categories");
+    }).catch(err => {
+      console.error(err);
+      res.redirect("/categories");
+    });
+}
+
+export default {newCategory, saveCategory, allCategories, deleteCategory, editCategory, updateCategory};
