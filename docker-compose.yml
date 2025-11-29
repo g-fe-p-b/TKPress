@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+
+    volumes:
+      # Persiste o banco SQLite e uploads se houver, mas por enquanto não há :)
+      - ./test.db:/app/test.db
+      - ./public/images:/app/public/images
+    restart: always
