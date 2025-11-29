@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from "body-parser";
 import connection from "./src/config/database.js";
 import session from "express-session";
 import compression from 'compression';
@@ -21,8 +22,8 @@ import User from "./src/models/User.js";
 app.set('view engine', 'ejs');
 app.set('views', join('views'));
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(compression());
 
 const scriptSrcUrls = [
