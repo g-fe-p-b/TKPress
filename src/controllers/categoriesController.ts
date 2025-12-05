@@ -1,22 +1,20 @@
 // categories/categoriesController.js
-import { Router } from "express";
-const router = Router();
 import Category from "../models/Category.js";
 import slugify from "slugify";
 
 // Form para nova categoria
-export async function newCategory(req, res){
+export async function newCategory(req: any, res: any){
   try{
     res.render("admin/categories/new");
   } catch (error){
     console.error(error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: 'Server error', error: (error as any).message });
   }
 };
 
 // Salvar nova categoria
-export async function saveCategory(req, res) {
-  const title = req.body.title;
+export async function saveCategory(req: any, res: any) {
+  const title = (req.body as any).title;
   if (title && title.trim() !== "") {
     Category.create({
       title: title.trim(),
@@ -33,7 +31,7 @@ export async function saveCategory(req, res) {
 };
 
 // Index de categorias
-export async function allCategories(req, res) {
+export async function allCategories(req: any, res: any) {
     Category.findAll().then(categories => {
       res.render("admin/categories/index", { categories });
     }).catch(err => {
@@ -43,8 +41,8 @@ export async function allCategories(req, res) {
 };
 
 // Deletar
-export async function deleteCategory(req, res) {
-    const id = req.body.id;
+export async function deleteCategory(req: any, res: any) {
+  const id = (req.body as any).id;
     if (id) {
       Category.destroy({ where: { id } })
         .then(() => res.redirect("/categories"))
@@ -59,8 +57,8 @@ export async function deleteCategory(req, res) {
 
 
 // Editar (GET)
-export async function editCategory(req, res) {
-    const id = req.params.id;
+export async function editCategory(req: any, res: any) {
+  const id = (req.params as any).id;
     if (isNaN(id)) {
       return res.redirect("admin/categories/index");
     }
@@ -75,8 +73,8 @@ export async function editCategory(req, res) {
 
 
 // Atualizar (POST)
-export async function updateCategory(req, res) {
-    const { id, title } = req.body;
+export async function updateCategory(req: any, res: any) {
+  const { id, title } = req.body as any;
     if (!id || !title) return res.redirect("/categories/update");
 
     Category.update({ title, slug: slugify(title, { lower: true, strict: true }) }, {

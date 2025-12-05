@@ -1,7 +1,6 @@
 import { Router } from 'express';
 const router = Router();
-import main from '../../main.js';
-import {  } from '../controllers/categoriesController.js';
+import { newCategory, saveCategory, allCategories, deleteCategory, editCategory, updateCategory } from '../controllers/categoriesController.js';
 
 router.get('/', allCategories);
 router.get('/new', newCategory);

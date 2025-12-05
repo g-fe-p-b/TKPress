@@ -1,6 +1,4 @@
 // articles/articlesController.js
-import { Router } from "express";
-const router = Router();
 import Category from "../models/Category.js";
 import slugify from "slugify";
 import Article from "../models/Article.js";
@@ -8,7 +6,7 @@ import ensureAuth from "../middleware/auth.js";
 import sanitizeHtml from "sanitize-html";
 
 // Lista pública de artigos (página /articles)
-export async function allArticles(req, res) {
+export async function allArticles(req: any, res: any) {
   Article.findAll({
     include: [{ model: Category }],
     order: [['id', 'DESC']]
@@ -21,7 +19,7 @@ export async function allArticles(req, res) {
 };
 
 // Rota para criar novo artigo (form)
-export async function newArticle(req, res) {
+export async function newArticle(req: any, res: any) {
   Category.findAll().then(categories => {
     res.render("admin/articles/newArticle", { categories });
   }).catch(err => {
@@ -31,8 +29,8 @@ export async function newArticle(req, res) {
 };
 
 // Salvar novo artigo — sanitiza conteúdo
-export async function saveArticle(req, res) {
-  const { title, body, category } = req.body;
+export async function saveArticle(req: any, res: any) {
+  const { title, body, category } = req.body as any;
   if (!title || !body) {
     req.session.flash = { type: "error", message: "Título e conteúdo são obrigatórios." };
     return res.redirect("/articles");
@@ -64,8 +62,8 @@ export async function saveArticle(req, res) {
 
 
 // Deletar artigo
-export async function deleteArticle(req, res) {
-  const id = req.body.id;
+export async function deleteArticle(req: any, res: any) {
+  const id = (req.body as any).id;
   if (id) {
     Article.destroy({ where: { id } }).then(() => {
       req.session.flash = { type: "success", message: "Artigo deletado." };
@@ -81,7 +79,7 @@ export async function deleteArticle(req, res) {
 
 
 // Lista admin
-export async function indexArticles(req, res) {
+export async function indexArticles(req: any, res: any) {
   Article.findAll({ include: [{ model: Category }], order: [['id', 'DESC']] })
   .then(articles => res.render("/articles", { articles }))
   .catch(err => {

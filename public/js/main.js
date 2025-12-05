@@ -1,7 +1,7 @@
 (function () {
   // Toast simples
   function showToast(message, type = 'info') {
-    const toast = document.getElementById('toast');
+    const toast = document.getElementById('live-toast');
     if (!toast) return;
     toast.innerHTML = `<div class="msg">${message}</div>`;
     toast.hidden = false;
@@ -12,8 +12,13 @@
   };
 
   // CTA buttons
+  const btnToast = document.getElementById('btn-toast');
   const ctaRead = document.getElementById('cta-read');
   const ctaNew = document.getElementById('cta-new');
+ 
+  btnToast.addEventListener("click", () => {
+    toast.hidden = true;
+  });
 
   if (ctaRead) {
     ctaRead.addEventListener('click', () => {
@@ -72,13 +77,13 @@ function validarCPF(cpf) {
 };
 
 if (registerForm) {
-  registerForm.addEventListener('submit', () => {
+  registerForm.addEventListener('submit', (e) => {
     const nome = registerForm.name.value.trim();
     const email = registerForm.email.value.trim();
     const cpf = registerForm.cpf.value.trim();
-    const senha = registerForm.password.value.trim();
+    const password = registerForm.password.value.trim();
 
-    if (!nome || !email || !cpf || !senha) {
+    if (!nome || !email || !cpf || !password) {
       e.preventDefault();
       showToast('Todos os campos são obrigatórios');
       return;
@@ -134,4 +139,14 @@ document.addEventListener('DOMContentLoaded', () =>{
   // inicializa tema salvo
   const saved = localStorage.getItem('tk_theme') || 'light';
   applyTheme(saved);
+
+  const serverMsg = document.getElementById('server-message');
+  if (serverMsg) {
+    const msg = serverMsg.dataset.msg;
+    // Pequeno delay para garantir que a UI carregou
+    setTimeout(() => {
+        showToast(msg); 
+    }, 200);
+  }
+  
 })();

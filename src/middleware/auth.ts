@@ -1,4 +1,4 @@
-export default function ensureAuth(req, res, next) {
+export default function ensureAuth(req: any, res: any, next: any) {
   // Se session existir e userId definido, continua
   if (req.session && req.session.userId) {
     // opcionalmente popular res.locals.user para views

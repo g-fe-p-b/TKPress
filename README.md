@@ -1,6 +1,6 @@
 TKPress
 
-Um CMS simples e escalável desenvolvido em Node.js + Express + EJS, com foco em boa experiência do usuário, UI consistente e estrutura otimizada para SEO.
+Um CMS simples e escalável originalmente em Node.js + Express + EJS. O backend foi migrado para TypeScript (arquivos em `src/`) mantendo a mesma estrutura e funcionalidade.
 
 🚀 Funcionalidades
 
@@ -42,7 +42,7 @@ Backend: Node.js, Express
 
 Frontend: EJS, Bootstrap (customizado)
 
-Banco de Dados: MySQL ou PostgreSQL (via Sequelize)
+Banco de Dados: por padrão usa SQLite (via Sequelize). É possível configurar MySQL/Postgres no `src/config/database.js`.
 
 Editor de Texto: TinyMCE
 
@@ -60,40 +60,64 @@ Autenticação: Sessions / JWT (dependendo da configuração)
   /css             -> Estilos customizados
 
   
-📖 Como rodar o projeto
 
-Clone este repositório:
+📖 Como rodar o projeto (atualizado para TypeScript)
 
+1) Clone o repositório
+
+```powershell
 git clone https://github.com/g-fe-p-b/TKPress
-cd tkpress
+cd TKPress
+```
 
+2) Instale dependências
 
-Instale as dependências:
-
+```powershell
 npm install
+```
 
+3) Observações sobre o banco de dados
 
-Configure o banco de dados no arquivo .env. Exemplo:
+- Por padrão o projeto está configurado para usar SQLite (arquivo: `./tkpress.sqlite`) via `src/config/database.js`.
+- Se preferir MySQL/Postgres, edite `src/config/database.js` ou configure variáveis de ambiente conforme sua versão do Sequelize.
 
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=senha
-DB_NAME=tkpress
+4) Comandos úteis
 
+- Rodar em desenvolvimento (com recarga):
 
-Rode as migrations (se estiver usando Sequelize):
+```powershell
+npm run dev
+```
 
-npx sequelize db:migrate
+- Rodar com nodemon/watch (alternativa):
 
+```powershell
+npm run dev:watch
+```
 
-Inicie o servidor:
+- Executar verificação TypeScript (typecheck):
 
-npm start
+```powershell
+npx tsc --noEmit
+```
 
+- Rodar testes (Jest):
 
-Acesse no navegador:
+```powershell
+npm test
+```
 
-http://localhost:3000
+5) Observações importantes (migração para TypeScript)
+
+- As importações ESM no runtime usam extensões `.js` (por exemplo em `index.ts` e nas rotas/controllers). O executor `tsx` mapeia essas importações para os arquivos TypeScript durante a execução.
+- Existe um arquivo temporário de declarações: `src/types/custom.d.ts` para silenciar pacotes sem `@types` instalados. Isso é uma medida provisória.
+- Durante a migração foram usadas marcações `any` em vários controllers/middlewares para acelerar a transição. Recomendo substituir esses `any` por tipos corretos (`Request`, `Response`, `NextFunction` do Express e interfaces para os modelos Sequelize) em uma próxima etapa.
+- Recomendo instalar as declarações de tipos quando disponíveis (ex.: `@types/express`, `@types/node`) e remover declarações locais quando apropriado.
+
+6) Problemas comuns
+
+- Erro de importação "Cannot find module './...Controller.js'" — certifique-se de rodar o projeto com o `tsx` (script `dev`) ou com um loader ESM compatível com TypeScript (`ts-node/esm`) se preferir essa abordagem.
+
 
 🌟 Futuras melhorias
 

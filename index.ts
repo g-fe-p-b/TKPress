@@ -6,6 +6,7 @@ import compression from 'compression';
 import { contentSecurityPolicy } from 'helmet';
 import { join } from 'path';
 import sequelize from "./src/config/database.js";
+import flash from "connect-flash";
 const app = express();
 
 // controllers
@@ -69,9 +70,11 @@ app.use(session({
     maxAge: 3600000
   }
 }));
+app.use(flash());
 
 app.use((req,res,next) => {
   res.locals.user = req.session.user || null;
+  res.locals.messages = req.flash();
   next();
 });
 
@@ -115,31 +118,8 @@ app.get("/articles/:slug", (req, res) => {
     });
 });
 
-app.post("/auth/login", (req, res) => {
-  const {email, password} = req.body;
-  
-  if (email === "teste@teste" && password === "teste") {
-    req.session.user = {
-      id: 1,
-      email: "teste@teste",
-      name: "Usuário Teste"
-    };
-    console.log("Login efetuado com sucesso!", req.session.user);
-  }
-  res.redirect("/");
-})
-app.post("/auth/regsiter", (req, res) => {
-  const {name, email, cpf, password} = req.body;
-  //validação de cpf
-  req.session.user = {
-    cpf: cpf,
-    email: email,
-    name: name,
-    password: password
-  };
-  console.log("Registro efetuado com sucesso!", req.session.user);
-  res.redirect("/");
-});
+
+
 app.get("/auth/logout", (req, res) => {
   req.session.destroy(err => {
     if (err) {
@@ -154,17 +134,6 @@ app.get("/about", (req, res) => {
 });
 
 
-app.get("/api/me", (req, res) => {
-  if (req.session && req.session.userId) {
-    res.json({
-      id: req.session.userId,
-      name: req.session.userName,
-      email: req.session.userEmail
-    });
-  } else {
-    res.json(null);
-  }
-});
 
 const PORT = process.env.PORT || 3000;
 const startServer = async () => {
